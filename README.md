@@ -2,13 +2,13 @@
 
 # Как развернуть локально:
 
-`
-git clone git@github.com:Tabarzin/habr-text-2.git
-cd habr-text-2
-npm install
-npm run dev
+```
+- git clone git@github.com:Tabarzin/habr-text-2.git
+- cd habr-text-2
+- npm install
+- npm run dev
 
-`
+```
 
 ### Создайте одностраничное приложение, которое позволяет:
 
