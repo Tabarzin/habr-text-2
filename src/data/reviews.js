@@ -84,3 +84,5 @@ const reviews = [
     text: "Прекрасно организовано, никаких проблем.",
   },
 ];
+
+export default reviews;
