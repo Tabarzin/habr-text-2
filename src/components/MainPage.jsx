@@ -59,8 +59,8 @@ const MainPage = () => {
           >
             <option value="">All</option>
             <option value="Google">Google</option>
-            <option value="Yandex">Yandex</option>
-            <option value="2GIS">2GIS</option>
+            <option value="Яндекс">Яндекс</option>
+            <option value="2ГИС">2ГИС</option>
           </select>
         </label>
         <label>
