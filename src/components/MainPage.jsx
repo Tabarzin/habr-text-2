@@ -1,6 +1,7 @@
 import React, { useEffect } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { fetchData } from "../utils/actions";
+import "./MainPage.css";
 
 const MainPage = () => {
   const dispatch = useDispatch();
@@ -21,13 +22,25 @@ const MainPage = () => {
 
   return (
     <div>
-      {/* <h1>Reviews</h1>
-      <ul>
+      <h1>Reviews</h1>
+      <div className="grid-container">
         {data.map((item, index) => (
-          <li key={index}>{item}</li>
+          <div className="grid-item" key={index}>
+            <div>
+              <strong>Platform:</strong> {item.platform}
+            </div>
+            <div>
+              <strong>Rating:</strong> {item.rating}
+            </div>
+            <div>
+              <strong>Date:</strong> {item.date}
+            </div>
+            <div>
+              <strong>Text:</strong> {item.text}
+            </div>
+          </div>
         ))}
-      </ul> */}
-      hello
+      </div>
     </div>
   );
 };
