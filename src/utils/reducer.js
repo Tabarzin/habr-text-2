@@ -16,21 +16,8 @@ const reviewsReducer = (state = initialState, action) => {
         filteredReviews: action.data,
         loading: false,
       };
-    case FILTER_REVIEWS: {
-      const { platform, ratingMin, ratingMax } = action.filterCriteria;
-      const filtered = state.reviews.filter((review) => {
-        const matchesPlatform = platform ? review.platform === platform : true;
-        const matchesRating =
-          review.rating >= ratingMin && review.rating <= ratingMax;
-        return matchesPlatform && matchesRating;
-      });
-      return {
-        ...state,
-        filteredReviews: filtered,
-      };
-    }
 
-    case FILTER_REVIEWS:
+    case FILTER_REVIEWS: {
       const { platform, ratingMin, ratingMax } = action.filterCriteria;
 
       const filteredReviews = state.reviews.filter((review) => {
@@ -46,8 +33,11 @@ const reviewsReducer = (state = initialState, action) => {
       });
 
       return { ...state, filteredReviews };
+    }
+
     case SORT_REVIEWS: {
       const { by, order } = action.sortCriteria;
+
       const sorted = [...state.filteredReviews].sort((a, b) => {
         if (by === "date") {
           const dateA = new Date(a.date);
@@ -59,11 +49,13 @@ const reviewsReducer = (state = initialState, action) => {
         }
         return 0;
       });
+
       return {
         ...state,
         filteredReviews: sorted,
       };
     }
+
     default:
       return state;
   }

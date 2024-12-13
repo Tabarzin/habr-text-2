@@ -8,10 +8,24 @@ import {
   sortReviews,
 } from "../utils/actions";
 
+import { createSelector } from "reselect";
+
+const selectReviewState = createSelector(
+  (state) => state.filteredReviews,
+  (state) => state.loading,
+  (state) => state.error,
+
+  (filteredReviews, loading, error) => ({
+    filteredReviews,
+    loading,
+    error,
+  })
+);
+
 const MainPage = () => {
   const dispatch = useDispatch();
-  const { filteredReviews, loading, error } = useSelector((state) => state);
 
+  const { filteredReviews, loading, error } = useSelector(selectReviewState);
   const [filterCriteria, setFilterCriteria] = useState({
     platform: "",
     ratingMin: 1,
@@ -46,10 +60,10 @@ const MainPage = () => {
   if (error) return <div>Error: {error}</div>;
 
   return (
-    <div>
+    <div className="main-container">
       <h1>Reviews</h1>
 
-      <div>
+      <div className="filters-container">
         <label>
           Platform:
           <select
@@ -65,23 +79,25 @@ const MainPage = () => {
         </label>
         <label>
           Rating:
-          <input
-            type="number"
-            name="ratingMin"
-            value={filterCriteria.ratingMin}
-            onChange={handleFilterChange}
-          />{" "}
-          to{" "}
-          <input
-            type="number"
-            name="ratingMax"
-            value={filterCriteria.ratingMax}
-            onChange={handleFilterChange}
-          />
+          <div>
+            <input
+              type="number"
+              name="ratingMin"
+              value={filterCriteria.ratingMin}
+              onChange={handleFilterChange}
+            />{" "}
+            to{" "}
+            <input
+              type="number"
+              name="ratingMax"
+              value={filterCriteria.ratingMax}
+              onChange={handleFilterChange}
+            />
+          </div>
         </label>
       </div>
 
-      <div>
+      <div className="sort-buttons">
         <button onClick={() => handleSortChange("date")}>Sort by Date</button>
         <button onClick={() => handleSortChange("rating")}>
           Sort by Rating
