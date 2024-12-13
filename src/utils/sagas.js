@@ -1,15 +1,21 @@
-import { takeEvery, put } from "redux-saga/effects";
-import { FETCH_DATA, fetchDataSuccess, fetchDataFailure } from "./actions";
+import { call, put, takeLatest } from "redux-saga/effects";
+import {
+  FETCH_REVIEWS_REQUEST,
+  fetchReviewsSuccess,
+  fetchReviewsFailure,
+} from "./actions";
+
 import data from "../data/reviews";
 
-function* fetchDataSaga() {
+function* fetchReviews() {
   try {
-    yield put(fetchDataSuccess(data));
+    const reviews = data;
+    yield put(fetchReviewsSuccess(reviews));
   } catch (error) {
-    yield put(fetchDataFailure(error.message));
+    yield put(fetchReviewsFailure(error.message));
   }
 }
 
-export default function* rootSaga() {
-  yield takeEvery(FETCH_DATA, fetchDataSaga);
+export default function* watchFetchReviews() {
+  yield takeLatest(FETCH_REVIEWS_REQUEST, fetchReviews);
 }

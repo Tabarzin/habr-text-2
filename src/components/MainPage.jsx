@@ -1,21 +1,46 @@
-import React, { useEffect } from "react";
-import { useDispatch, useSelector } from "react-redux";
-import { fetchData } from "../utils/actions";
 import "./MainPage.css";
+
+import React, { useEffect, useState } from "react";
+import { useDispatch, useSelector } from "react-redux";
+import {
+  fetchReviewsRequest,
+  filterReviews,
+  sortReviews,
+} from "../utils/actions";
 
 const MainPage = () => {
   const dispatch = useDispatch();
-  const { data, loading, error } = useSelector((state) => state);
+  const { filteredReviews, loading, error } = useSelector((state) => state);
 
-  console.log(data, "DATATA");
+  const [filterCriteria, setFilterCriteria] = useState({
+    platform: "",
+    ratingMin: 1,
+    ratingMax: 5,
+  });
 
-  data.map((item, i) => {
-    console.log(item.platform);
+  const [sortCriteria, setSortCriteria] = useState({
+    by: "date",
+    order: "desc",
   });
 
   useEffect(() => {
-    dispatch(fetchData());
+    dispatch(fetchReviewsRequest());
   }, [dispatch]);
+
+  const handleFilterChange = (e) => {
+    const updatedCriteria = {
+      ...filterCriteria,
+      [e.target.name]: e.target.value,
+    };
+    setFilterCriteria(updatedCriteria);
+    dispatch(filterReviews(updatedCriteria));
+  };
+
+  const handleSortChange = (by) => {
+    const newOrder = sortCriteria.order === "asc" ? "desc" : "asc";
+    setSortCriteria({ by, order: newOrder });
+    dispatch(sortReviews({ by, order: newOrder }));
+  };
 
   if (loading) return <div>Loading...</div>;
   if (error) return <div>Error: {error}</div>;
@@ -23,24 +48,66 @@ const MainPage = () => {
   return (
     <div>
       <h1>Reviews</h1>
-      <div className="grid-container">
-        {data.map((item, index) => (
-          <div className="grid-item" key={index}>
-            <div>
-              <strong>Platform:</strong> {item.platform}
-            </div>
-            <div>
-              <strong>Rating:</strong> {item.rating}
-            </div>
-            <div>
-              <strong>Date:</strong> {item.date}
-            </div>
-            <div>
-              <strong>Text:</strong> {item.text}
-            </div>
-          </div>
-        ))}
+
+      <div>
+        <label>
+          Platform:
+          <select
+            name="platform"
+            value={filterCriteria.platform}
+            onChange={handleFilterChange}
+          >
+            <option value="">All</option>
+            <option value="Google">Google</option>
+            <option value="Yandex">Yandex</option>
+            <option value="2GIS">2GIS</option>
+          </select>
+        </label>
+        <label>
+          Rating:
+          <input
+            type="number"
+            name="ratingMin"
+            value={filterCriteria.ratingMin}
+            onChange={handleFilterChange}
+          />{" "}
+          to{" "}
+          <input
+            type="number"
+            name="ratingMax"
+            value={filterCriteria.ratingMax}
+            onChange={handleFilterChange}
+          />
+        </label>
       </div>
+
+      <div>
+        <button onClick={() => handleSortChange("date")}>Sort by Date</button>
+        <button onClick={() => handleSortChange("rating")}>
+          Sort by Rating
+        </button>
+      </div>
+
+      <table>
+        <thead>
+          <tr>
+            <th>Platform</th>
+            <th>Rating</th>
+            <th>Date</th>
+            <th>Text</th>
+          </tr>
+        </thead>
+        <tbody>
+          {filteredReviews.map((item, index) => (
+            <tr key={index}>
+              <td>{item.platform}</td>
+              <td>{item.rating}</td>
+              <td>{item.date}</td>
+              <td>{item.text}</td>
+            </tr>
+          ))}
+        </tbody>
+      </table>
     </div>
   );
 };
