@@ -1,6 +1,8 @@
 # Задание
 
-# Как развернуть локально:
+## Деплой: https://habr-text-2.vercel.app/
+
+## Как развернуть локально:
 
 ```
 - git clone git@github.com:Tabarzin/habr-text-2.git
